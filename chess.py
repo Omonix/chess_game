@@ -47,17 +47,18 @@ def lb_show(g):
 def lb_convert_xy(xy):
     alpha_list = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h']
     return (alpha_list.index(xy[0].lower()), 8 - int(xy[1]))
-def lb_reset_case(g, y, x):
-    if y % 2 == 0:
-        if x % 2 == 0:
-            g[y][x] = '■'
+def lb_play(g, fromer, toer):
+    g[toer[1]][toer[0]] = g[fromer[1]][fromer[0]]
+    if fromer[1] % 2 == 0:
+        if fromer[0] % 2 == 0:
+            g[fromer[1]][fromer[0]] = '■'
         else:
-            g[y][x] = '□'
+            g[fromer[1]][fromer[0]] = '□'
     else:
-        if x % 2 == 0:
-            g[y][x] = '□'
+        if fromer[0] % 2 == 0:
+            g[fromer[1]][fromer[0]] = '□'
         else:
-            g[y][x] = '■'
+            g[fromer[1]][fromer[0]] = '■'
 def lb_can_play(g, here, to, player):
     fromer = lb_convert_xy(here)
     toer = lb_convert_xy(to)
@@ -65,9 +66,10 @@ def lb_can_play(g, here, to, player):
         return False
     if g[fromer[1]][fromer[0]][1] == 'P':
         if (fromer[1] - 1 == toer[1] and player == 2) or (fromer[1] + 1 == toer[1] and player == 1):
-            g[toer[1]][toer[0]] = g[fromer[1]][fromer[0]]
-            lb_reset_case(g, fromer[1], fromer[0])
-    print(lb_show(g))
+            lb_play(g, fromer, toer)
+    elif g[fromer[1]][fromer[0]][1] == 'B':
+        if (abs(fromer[1] - toer[1]) == abs(fromer[0] - toer[0])):
+            lb_play(g, fromer, toer)
     return True
 
 player = 1
