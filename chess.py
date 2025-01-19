@@ -62,15 +62,12 @@ def lb_play(g, fromer, toer):
 def lb_can_play(g, here, to, player):
     fromer = lb_convert_xy(here)
     toer = lb_convert_xy(to)
-    if int(g[fromer[1]][fromer[0]][0]) != player:
+    if int(g[fromer[1]][fromer[0]][0]) != player or g[toer[1]][toer[0]] == '■' or g[toer[1]][toer[0]] == '□':
         return False
-    if g[fromer[1]][fromer[0]][1] == 'P':
-        if (fromer[1] - 1 == toer[1] and player == 2) or (fromer[1] + 1 == toer[1] and player == 1):
-            lb_play(g, fromer, toer)
-    elif g[fromer[1]][fromer[0]][1] == 'B':
-        if (abs(fromer[1] - toer[1]) == abs(fromer[0] - toer[0])):
-            lb_play(g, fromer, toer)
-    return True
+    if ((g[fromer[1]][fromer[0]][1] == 'P' and (fromer[1] - 1 == toer[1] and player == 2)) or (fromer[1] + 1 == toer[1] and player == 1)) or (g[fromer[1]][fromer[0]][1] == 'B' and (abs(fromer[1] - toer[1]) == abs(fromer[0] - toer[0]))) or (g[fromer[1]][fromer[0]][1] == 'R' and (fromer[0] == toer[0] or toer[1] == fromer[1])):
+        lb_play(g, fromer, toer)
+        return True
+    return False
 
 player = 1
 grid = lb_new_grille()
