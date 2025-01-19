@@ -1,0 +1,90 @@
+# pion=pawn roi=king reine=queen cavalier=knight fou=bishop tour=rook
+BLACK = '\033[1;30m'
+RED = '\033[1;31m'
+GREEN = '\033[1;32m'
+YELLOW = '\033[1;33m'
+BLUE = '\033[1;34m'
+MAGENTA = '\033[1;35m'
+CYAN = '\033[1;36m'
+LIGHT_GRAY = '\033[1;37m'
+DARK_GRAY = '\033[1;90m'
+BRIGHT_RED = '\033[1;91m'
+BRIGHT_GREEN = '\033[1;92m'
+BRIGHT_YELLOW = '\033[1;93m'
+BRIGHT_BLUE = '\033[1;94m'
+BRIGHT_MAGENTA = '\033[1;95m'
+BRIGHT_CYAN = '\033[1;96m'
+WHITE = '\033[1;97m'
+
+def lb_colored(str, color, end='\033[0m'):
+    return color + f'{str}' + end
+def lb_new_grille():
+    return [
+        ['1R', '1T', '1B', '1Q', '1K', '1B', '1T', '1R'], 
+        ['1P', '1P', '1P', '1P', '1P', '1P', '1P', '1P'], 
+        ['■', '□', '■', '□', '■', '□', '■', '□'], 
+        ['□', '■', '□', '■', '□', '■', '□', '■'], 
+        ['■', '□', '■', '□', '■', '□', '■', '□'], 
+        ['□', '■', '□', '■', '□', '■', '□', '■'], 
+        ['2P', '2P', '2P', '2P', '2P', '2P', '2P', '2P'],
+        ['2R', '2T', '2B', '2Q', '2K', '2B', '2T', '2R'],
+    ]
+def lb_show(g):
+    the_game = '\n'
+    for i in g:
+        the_game += '   '
+        for j in range(len(i)):
+            if j != 0:
+                the_game += ' '
+            if i[j][0] == '1':
+                the_game += lb_colored(i[j][1], GREEN)
+            elif i[j][0] == '2':
+                the_game += lb_colored(i[j][1], BLUE)
+            else:
+                the_game += lb_colored(i[j], WHITE)
+        the_game += '\n'
+    return the_game
+def lb_convert_xy(xy):
+    alpha_list = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h']
+    return (alpha_list.index(xy[0].lower()), 8 - int(xy[1]))
+def lb_reset_case(g, y, x):
+    if y % 2 == 0:
+        if x % 2 == 0:
+            g[y][x] = '■'
+        else:
+            g[y][x] = '□'
+    else:
+        if x % 2 == 0:
+            g[y][x] = '□'
+        else:
+            g[y][x] = '■'
+def lb_can_play(g, here, to, player):
+    fromer = lb_convert_xy(here)
+    toer = lb_convert_xy(to)
+    if int(g[fromer[1]][fromer[0]][0]) != player:
+        return False
+    if g[fromer[1]][fromer[0]][1] == 'P':
+        if (fromer[1] - 1 == toer[1] and player == 2) or (fromer[1] + 1 == toer[1] and player == 1):
+            g[toer[1]][toer[0]] = g[fromer[1]][fromer[0]]
+            lb_reset_case(g, fromer[1], fromer[0])
+    print(lb_show(g))
+    return True
+
+player = 1
+grid = lb_new_grille()
+while True:
+    print(lb_show(grid))
+    if player == 1:
+        todo = input(lb_colored('Player 1 : ', GREEN))
+    else:
+        todo = input(lb_colored('Player 2 : ', BLUE))
+    if todo == 'play':
+        if not(lb_can_play(grid, input('Piece to move : '), input('To : '), player)):
+            print(lb_colored('Error move impossible', RED))
+            continue
+    elif todo == 'q' or todo == 'quit':
+        exit()
+    else:
+        print(lb_colored(f'Error \'{todo}\' is not a comand', RED))
+        continue
+    player = player % 2 + 1
