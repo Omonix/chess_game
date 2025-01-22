@@ -30,18 +30,18 @@ def lb_new_grille():
         ['2R', '2T', '2B', '2Q', '2K', '2B', '2T', '2R'],
     ]
 def lb_show(g):
-    the_game = '\n'
-    for i in g:
-        the_game += '   '
-        for j in range(len(i)):
+    the_game = lb_colored('\n       A B C D E F G H\n       ---------------\n', WHITE)
+    for i in range(len(g)):
+        the_game += lb_colored(f'   {8 - i} | ', WHITE)
+        for j in range(len(g)):
             if j != 0:
                 the_game += ' '
-            if i[j][0] == '1':
-                the_game += lb_colored(i[j][1], GREEN)
-            elif i[j][0] == '2':
-                the_game += lb_colored(i[j][1], BLUE)
+            if g[i][j][0] == '1':
+                the_game += lb_colored(g[i][j][1], GREEN)
+            elif g[i][j][0] == '2':
+                the_game += lb_colored(g[i][j][1], BLUE)
             else:
-                the_game += lb_colored(i[j], WHITE)
+                the_game += lb_colored(g[i][j], WHITE)
         the_game += '\n'
     return the_game
 def lb_convert_xy(xy):
@@ -74,16 +74,16 @@ grid = lb_new_grille()
 while True:
     print(lb_show(grid))
     if player == 1:
-        todo = input(lb_colored('Player 1 : ', GREEN))
+        todo = input(lb_colored('Player 1 : ', GREEN)).split(' ')
     else:
         todo = input(lb_colored('Player 2 : ', BLUE))
-    if todo == 'play':
-        if not(lb_can_play(grid, input('Piece to move : '), input('To : '), player)):
+    if todo[0] == 'play':
+        if not(lb_can_play(grid, todo[1], todo[2], player)):
             print(lb_colored('Error move impossible', RED))
             continue
-    elif todo == 'q' or todo == 'quit':
+    elif todo[0] == 'q' or todo[0] == 'quit':
         exit()
     else:
-        print(lb_colored(f'Error \'{todo}\' is not a comand', RED))
+        print(lb_colored(f'Error \'{todo[0]}\' is not a comand', RED))
         continue
     player = player % 2 + 1
