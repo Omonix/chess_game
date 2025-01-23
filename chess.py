@@ -64,7 +64,7 @@ def lb_can_play(g, here, to, player):
     toer = lb_convert_xy(to)
     if int(g[fromer[1]][fromer[0]][0]) != player or g[fromer[1]][fromer[0]] == '■' or g[fromer[1]][fromer[0]] == '□':
         return False
-    if ((g[fromer[1]][fromer[0]][1] == 'P' and (fromer[1] - 1 == toer[1] and player == 2)) or (fromer[1] + 1 == toer[1] and player == 1)) or (g[fromer[1]][fromer[0]][1] == 'B' and (abs(fromer[1] - toer[1]) == abs(fromer[0] - toer[0]))) or (g[fromer[1]][fromer[0]][1] == 'R' and (fromer[0] == toer[0] or toer[1] == fromer[1])):
+    if ((g[fromer[1]][fromer[0]][1] == 'P' and (fromer[1] - 1 == toer[1] and player == 2)) or (fromer[1] + 1 == toer[1] and player == 1)) or (g[fromer[1]][fromer[0]][1] == 'B' and (abs(fromer[1] - toer[1]) == abs(fromer[0] - toer[0]))) or (g[fromer[1]][fromer[0]][1] == 'R' and (fromer[0] == toer[0] or toer[1] == fromer[1])) or (g[fromer[1]][fromer[0]][1] == 'K' and (abs(fromer[0] - toer[0]) == 1 or abs(fromer[1] - toer[1] == 1))):
         lb_play(g, fromer, toer)
         return True
     return False
@@ -81,7 +81,7 @@ while True:
         if not(lb_can_play(grid, todo[1], todo[2], player)):
             print(lb_colored('Error move impossible', RED))
             continue
-    elif todo[0] == 'q' or todo[0] == 'quit':
+    elif todo[0] == 'q' or todo[0] == 'quit' or todo[0] == 'exit':
         exit()
     else:
         print(lb_colored(f'Error \'{todo[0]}\' is not a comand', RED))
