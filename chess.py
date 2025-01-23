@@ -60,6 +60,7 @@ def lb_play(g, fromer, toer):
         else:
             g[fromer[1]][fromer[0]] = '■'
 def lb_can_play(g, here, to, player):
+    print(g)
     fromer = lb_convert_xy(here)
     toer = lb_convert_xy(to)
     if int(g[fromer[1]][fromer[0]][0]) != player or g[fromer[1]][fromer[0]] == '■' or g[fromer[1]][fromer[0]] == '□':
@@ -81,9 +82,21 @@ while True:
         if not(lb_can_play(grid, todo[1], todo[2], player)):
             print(lb_colored('Error move impossible', RED))
             continue
+    elif todo[0] == 'help' or todo[0] == 'h':
+        print(f"""
+    {lb_colored('Commands :', MAGENTA)} 
+        {lb_colored('-', WHITE)} {lb_colored('play [piece\'s position] [piece\'s finished]', CYAN)} {lb_colored('-', WHITE)} {lb_colored('To move a piece', YELLOW)}
+        {lb_colored('-', WHITE)} {lb_colored('q', CYAN)} {lb_colored('|', WHITE)} {lb_colored('quit', CYAN)} {lb_colored('|', WHITE)} {lb_colored('exit', CYAN)} {lb_colored('-', WHITE)} {lb_colored('To exit the chess game', YELLOW)}
+        {lb_colored('-', WHITE)} {lb_colored('h', CYAN)} {lb_colored('|', WHITE)} {lb_colored('help', CYAN)} {lb_colored('-', WHITE)} {lb_colored('To get help (or not)', YELLOW)}
+    {lb_colored('Developed by Louis Blonde :', MAGENTA)} 
+        {lb_colored('-', WHITE)} {lb_colored('@omonyx', CYAN)} {lb_colored('-', WHITE)} {lb_colored('Github', YELLOW)}
+        {lb_colored('-', WHITE)} {lb_colored('@omonyx_sama', CYAN)} {lb_colored('-', WHITE)} {lb_colored('Instagram', YELLOW)}
+               """)
+        input('Press ENTER to pass... ')
+        continue
     elif todo[0] == 'q' or todo[0] == 'quit' or todo[0] == 'exit':
         exit()
     else:
-        print(lb_colored(f'Error \'{todo[0]}\' is not a comand', RED))
+        print(lb_colored(f'Error \'{todo[0]}\' is not a command', RED))
         continue
     player = player % 2 + 1
